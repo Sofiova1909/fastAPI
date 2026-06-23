@@ -1,15 +1,10 @@
 from fastapi import FastAPI , HTTPException
-from pydantic import BaseModel 
+from modelos.clientes import Cliente, ClienteCrear
 
 app =  FastAPI()
 
 
-#Crear modelo clientes (id, nombre, email, descirpcion)
-class Cliente(BaseModel):
-    id: int
-    nombre: str
-    email:str
-    descripcion: str
+
 
 
 lista_clientes: list[Cliente] = []
@@ -20,12 +15,12 @@ lista_clientes: list[Cliente] = []
 
 
 #endpoint para listar todos los clientes
-@app.get("/clientes")
+@app.get("/clientes", response_model=list[Cliente])
 def listar_clientes():
     return lista_clientes
 
 #endpoint para listar un solo cleinte de la lista
-@app.get("/clientes/{cliente_id}")
+@app.get("/clientes/{cliente_id}", response_model=Cliente)
 def listar_cliente(cliente_id: int):
     #recorrer la lista_clientes
     for i, obj_cliente in enumerate(lista_clientes):
@@ -34,7 +29,8 @@ def listar_cliente(cliente_id: int):
    
  
 #enpoint crear_clientes
-@app.post("/clientes")
-def crear_cliente(datos_cliente: Cliente):
-    lista_clientes.append(datos_cliente)
-    return datos_cliente
+@app.post("/clientes",  response_model=Cliente)
+def crear_cliente(datos_cliente: ClienteCrear):
+    cliente_val =Cliente.model_validate(datos_cliente.model_dump())
+    lista_clientes.append(cliente_val)
+    return cliente_val

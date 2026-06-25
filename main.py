@@ -76,23 +76,43 @@ async def eliminar_cliente(cliente_id: int):
 async def listar_facturas():
     return listar_facturas
 
-@app.get("/facturas/{id_factura}", response_model=list[Factura])
-async def listar_facturas(id_factura: int):
+
+@app.get("/facturas/{factura_id}", response_model=Factura)
+async def listar_facturas(factura_id: int):
     #recorrer la lista_facturas
     for i, obj_factura in enumerate(lista_facturas):
-        if obj_factura.id == id_factura:
+        if obj_factura.id == factura_id:
             return obj_factura
     raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=f"La factura con id {id_factura}, no existe."
+            status_code=status.HTTP_400_BAD_REQUEST, detail=f"La factura con id {factura_id}, no existe."
     )
 
 
-@app.post("/facturas/{id_cliente}", response_model=Factura)
-async def crear_facturas(id_cliente: int, datos_factura: Factura):
-    pass
 
-@app.patch("/facturas/{id_factura}", response_model=Factura)
-async def editar_facturas(id_factura: int, datos_factura: Factura):
+@app.post("/facturas/{cliente_id}", response_model=Factura)
+async def crear_facturas(cliente_id: int, datos_factura: FacturaCrear):
+    #buscar el cliente en la lista_clientes
+    cliente_encontrado = None
+    for cliente in lista_clientes:
+        if cliente.id == cliente_id:
+            cliente_encontrado = cliente
+    #si no existe el cliente
+    if not cliente_encontrado:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=f"El cliente con id {cliente_id}, no existe."
+        )
+
+
+    #validar datos de la factura
+    factura_val = Factura.model_validate(datos_factura.model_dump())
+    factura_val.cliente = cliente_encontrado
+    #id de la factura
+    factura_val.id = len(lista_facturas) + 1
+    return factura_val
+
+
+@app.patch("/facturas/{factura_id}", response_model=Factura)
+async def editar_facturas(factura_id: int, datos_factura: Factura):
     pass
 
 @app.delete("/facturas/{id_factura}", response_model=list[Factura])

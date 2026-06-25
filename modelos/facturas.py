@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from clientes import Cliente
+from .clientes import Cliente
 
 
 class FacturaBase(BaseModel):
@@ -14,5 +14,5 @@ class FacturaCrear(FacturaBase):
 class FacturaEditar(FacturaBase):
     pass
 
-class FacturaEditar(FacturaBase):
+class Factura(FacturaBase):
     id: int | None = None

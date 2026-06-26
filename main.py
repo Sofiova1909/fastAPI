@@ -119,3 +119,45 @@ async def editar_facturas(factura_id: int, datos_factura: Factura):
 async def eliminar_facturas(id_factura):
     pass
 
+
+
+#Crear los Enpoints de Transacciones
+
+@app.get("/transacciones", response_model=list[Transaccion])
+async def listar_transacciones():
+    return listar_transacciones
+
+@app.get("/transacciones/{id_transaccion}", response_model=Transaccion)
+async def listar_transacciones(id_transaccion: int):
+    pass
+
+@app.post("/transacciones/{factura_id}", response_model=Transaccion)
+async def crear_transacciones(factura_id: int, datos_transaccion: Transaccion):
+    #buscar una factura
+    factura_encontrada = None
+    for factura in lista_facturas:
+        if factura.id == factura_id:
+            factura_encontrada = factura
+    #si no existe la factura
+    if not factura_encontrada:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=f"La factura con id {factura_id}, no existe."
+        )
+
+
+    #validar datos de la transaccion
+    transaccion_val = Transaccion.model_validate(datos_transaccion.model_dump())
+    #id de la transaccion
+    transaccion_val.id = len(lista_transacciones) + 1
+    return transaccion_val
+
+
+
+@app.patch("/transaccion/{id_transaccion}", response_model=Transaccion)
+async def editar_transaccion(id_factura: int, datos_transaccion: Transaccion):
+    pass
+
+
+@app.delete("/transaccion/{id_transaccion}", response_model=Transaccion)
+async def eliminar_transaccion(id_transaccion: int):
+    pass

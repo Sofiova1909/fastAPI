@@ -81,5 +81,5 @@ Digitar en la consola los siguientes comandos en ESE ORDEN:
     - git push origin **main** --> la rama principal de mi proyecto es main.py
 
 
-## Creacion de los empoints , en el archivo main
+## Creacion de los endpoints , en el archivo main
 

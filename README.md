@@ -1,8 +1,4 @@
-# FastAPI:Sistema de Gestión de facturacion y transaciones
-
-# Autor: Maria Sofia Ramirez Ovalle
-
-# Tecnologías utilizadas : FastAPY, Python, Git, Gitghub
+# Avance del proyecto - facturacion y transaciones
 
 ## Contenido
 
@@ -83,3 +79,51 @@ Digitar en la consola los siguientes comandos en ESE ORDEN:
 
 ## Creacion de los endpoints , en el archivo main
 
+Se crearon los endpoints de Listar, Listar uno, Crear, Editar y Eliminar:
+    - Clientes: Listar_clientes, Listar_cliente, Crear_cliente, Editar_cliente, Eliminar_cliente
+    - Facturas: Listar_facturas, Listar_factura, Crear_factura, Editar_factura, Eliminar_factura
+    - Transacciones: Listar_transacciones, Listar_transaccion, Crear_transaccion, Editar_transaccion, Eliminar_transaccion.
+
+## Organizacion de carpetas
+    -Se creo la carpeta **app**
+        - Guardar archivo main y crear archivo conexion_bd 
+2. Crear subcarpetas dentro de la carpeta app
+    - enrutadores
+    - modelos
+3. Dentro de las dos carpetas crear 3 archivos : clientes, facturas y transacciones
+
+    app/
+    |_enrutadores/
+        |__clientes.py
+        |__facturas.py
+        |__transacciones.py
+    |_modelos
+        |__clientes.py
+        |__facturas.py
+        |__transacciones.py
+    |_conexion_bd.py
+    |_main.py
+
+
+## Avance 13 
+    - Se editaron los archivos de la carpeta enrutadores (instanciar la clase ROUTER)
+            rutas_clientes = APIRouter()
+            rutas_facturas = APIRouter()
+            rutas_transacciones = APIRouter()
+    - Se creo el archivo listas donde se importaron todos los modelos
+    - Se comprobo el funcionamiento de los endpoints
+
+---
+
+## Avance 14: conexion a base de datos 
+
+1. Se debe Instalar Dependencias sqlmodel:
+    pip install sqlmodel
+2. con el comando pip list, se verifica si se instalo correctamente el sgl modle y SQLAlchemy
+3. En el archivo requirements se debe copiar el numero de la version instalada de sqlmodel:
+    sqlmodel >=0.0.39
+4. https://sqlmodel.tiangolo.com/
+5. 
+
+
+    

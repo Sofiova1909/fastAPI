@@ -1,5 +1,5 @@
-from fastapi import APIRouter, HTTPException
-from ..modelos.facturas import Factura
+from fastapi import APIRouter, HTTPException, status
+from ..modelos.facturas import Factura #..modelos.facturas --> salir de la carpeta factura, entrar en la carpeta modelos, y mostrar el archivo factura
 from ..modelos.transacciones import Transaccion, TransaccionCrear, TransaccionEditar
 from ..listas import lista_clientes, lista_facturas, lista_transacciones
 

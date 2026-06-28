@@ -2,6 +2,8 @@ from http.client import HTTPException
 from fastapi import APIRouter
 from ..modelos.clientes import Cliente, ClienteCrear, ClienteEditar
 from ..listas import lista_clientes
+from ..conexion_bd import sesion_dependencia
+
 
 rutas_clientes = APIRouter()
 #lista_clientes: list[Cliente] = []
@@ -14,7 +16,7 @@ async def listar_clientes():
 
 #Endpoint para listar un solo cleinte de la lista
 @rutas_clientes.get("/clientes/{cliente_id}", response_model=Cliente)
-async def listar_cliente(cliente_id: int):
+async def listar_cliente(cliente_id: int, mi_sesion: sesion_dependencia):
     #recorrer la lista_clientes
     for i, obj_cliente in enumerate(lista_clientes):
         if obj_cliente.id == cliente_id:
@@ -25,13 +27,11 @@ async def listar_cliente(cliente_id: int):
 
 #Enpoint crear_clientes
 @rutas_clientes.post("/clientes",  response_model=Cliente)
-async def crear_cliente(datos_cliente: ClienteCrear):
+async def crear_cliente(datos_cliente: ClienteCrear, mi_sesion: sesion_dependencia):
     cliente_val =Cliente.model_validate(datos_cliente.model_dump())
-    #generar id
-    len(lista_clientes)+1
-    id_cliente = len(lista_clientes) + 1
-    cliente_val.id = id_cliente
-    lista_clientes.append(cliente_val)
+    mi_sesion.add(cliente_val)
+    mi_sesion.commit() #guardar cambios
+    mi_sesion.refresh(cliente_val) #actualizar el objeto con los datos de la bd
     return cliente_val
 
 

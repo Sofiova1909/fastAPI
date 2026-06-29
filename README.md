@@ -6,35 +6,33 @@ Este proyecto simula el nucleo financiero  de una plataforma comercial. La API f
 
 ---
 
-## Instalacion y configuracion
+## Avance 1: Instalacion y configuracion
 
-Seguir los siguientes pasos:
- 1. Crear una carpeta del proyecto, y abrila con Visual Studio Code
+Como primer paso para la creacion de este proyecto se debe:
+ 1. Crear una carpeta del proyecto, y abrir con Visual Studio Code
 
  2. Abrir una terminal  y ejecutar los sigueinte comandos:
     - Crear un entrono virtual: 
         **windows:** python -m venv .mi_env
-        **linux/macos:** python3 -m venv .mi_env
     - Activar el entorno:
-        **windows:** .mi_env\Scripts\activate
-        **linux/macos:** source .mi_env/bin/activate
+        **windows:** .mi_env\Scripts\activate (debe aparecer (.mi_env) PS C:......) 
 
  3. Instalar FastAPI, ejecutando comandos en la terminal:
     - Pip install "fastapi[standard]
     - pip list --> ver lista de instalacion
 
  4. Crear el archivo main.py 
-
- 5. Ejecutar con el comando -> fastapi dev main.py
+    - Ejecutar con el comando -> fastapi dev main.py
 
  6. una vez ejecutado se mostararn unas lineas para poder ver la documentacion interactiva
     - SERVER http://127.0.0.1:8000
     - SERVER http://127.0.0.1:8000/docs
-    - Para detener el servidos Uvicorn, se dijita el comando en la consola: ctrl + c
+    - Para detener el servidor Uvicorn, se dijita el comando en la consola: ctrl + c
+    - Para limpiar la consola usar el comando **clear**
 
- 7. Configuracion git: se creo un repositorio local
+ 7. Se hace una Configuracion git: se crea un repositorio local
 
-    1. Comprobar versiones instaladas de python y git: **pip --version** | **python --version**
+    1. Se debe comprobar versiones instaladas de python y git: **pip --version** | **python --version**
 
     2. Inicializar le repositorio: git init
 
@@ -50,9 +48,8 @@ Seguir los siguientes pasos:
 
 ---
 
-## Como crear un commit
-
-Digitar en la consola los siguientes comandos en ESE ORDEN:
+## Avance 2: Creacion de los commits
+En la consola ejecutar los siguientes comandos:
 
 1. **git status** -> Muestra qué archivos fueron modificados, creados y estan listos para el commit
         Los archivos en rojo son los modificados
@@ -65,7 +62,7 @@ Digitar en la consola los siguientes comandos en ESE ORDEN:
 
 ---
     
-## Como vincular con un repositorio GITGHUB:
+## Avance 3: Como vincular con un repositorio GITGHUB:
 
 1. Crear una cuenta en gitghub
 
@@ -76,20 +73,19 @@ Digitar en la consola los siguientes comandos en ESE ORDEN:
 4. En la consola digitar digitar el comando:
     - git push origin **main** --> la rama principal de mi proyecto es main.py
 
+---
 
-## Creacion de los endpoints , en el archivo main
+## Avance 4: Creacion de los Endpoints
 
 Se crearon los endpoints de Listar, Listar uno, Crear, Editar y Eliminar:
     - Clientes: Listar_clientes, Listar_cliente, Crear_cliente, Editar_cliente, Eliminar_cliente
     - Facturas: Listar_facturas, Listar_factura, Crear_factura, Editar_factura, Eliminar_factura
     - Transacciones: Listar_transacciones, Listar_transaccion, Crear_transaccion, Editar_transaccion, Eliminar_transaccion.
 
-## Organizacion de carpetas
-    -Se creo la carpeta **app**
-        - Guardar archivo main y crear archivo conexion_bd 
-2. Crear subcarpetas dentro de la carpeta app
-    - enrutadores
-    - modelos
+## Avance 5: Organizacion de carpetas
+1. Se creo la carpeta **app**
+    - Guardar archivo main y crear archivo conexion_bd 
+2. Crear subcarpetas: Enrutadores - Modelos
 3. Dentro de las dos carpetas crear 3 archivos : clientes, facturas y transacciones
 
     app/
@@ -105,7 +101,7 @@ Se crearon los endpoints de Listar, Listar uno, Crear, Editar y Eliminar:
     |_main.py
 
 
-## Avance 13 
+## Avance 6: Enrutar
     - Se editaron los archivos de la carpeta enrutadores (instanciar la clase ROUTER)
             rutas_clientes = APIRouter()
             rutas_facturas = APIRouter()
@@ -115,7 +111,7 @@ Se crearon los endpoints de Listar, Listar uno, Crear, Editar y Eliminar:
 
 ---
 
-## Avance 14: conexion a base de datos 
+## Avance 7: Conexion y Creacion a base de datos 
 
 1. Se debe Instalar Dependencias sqlmodel:
     pip install sqlmodel
@@ -123,7 +119,47 @@ Se crearon los endpoints de Listar, Listar uno, Crear, Editar y Eliminar:
 3. En el archivo requirements se debe copiar el numero de la version instalada de sqlmodel:
     sqlmodel >=0.0.39
 4. https://sqlmodel.tiangolo.com/
-5. 
+5. Se edito el archivo conexion_bd.py
+    - se crea el motor para la base de datos
+    - Se define el metodo para crear las tablas y la sesion
+    - Se creo inyeccion depentencias
+
+    - Se edito el archivo **enrutadores/cliente.py** = se editaron los enpoints de listar_cliente(FastAPI entrega una sesión de la base de datos) y 
+        crear_clientes(se añade un cliente, se guarda y refresca automaticamente) mi_sesion.add        (cliente_val)
+                     mi_sesion.commit()
+                     mi_sesion.refresh(cliente_val)
+    Se agrega lista_cli = sesion.exec(select(Cliente)).all() en el enpoint de listar todos los clientes para que ocnuslte todos los clienets que se han guardado en la base de datos 
+
+    - Se edito el archivo **modelos/clientes.py** = Se importo la conixon a sqlmodel, se le asigna un field a los campos de las tablas para que los datos que se envien se guarden **id: None = field(default)=None**, 
+
+    - Se edito el archivo main.py: Dentro de la variable app se pone lifespan=crear_tablas, es decir que ejecuta crear_tablas antes de recibir una peticion
+
+    - Una vez corregido los archivos se creara automaticamente el archivo de base de datos con el nombre asignado en **conexion_bd.py**
+
+6. Para abrir la base de datos se pueden de dos formas:
+    - En la Terminal
+    - Descargando SQLlite viewer 
+7. Se comprobo el funcionamiento de crear cliente y listar todos los clientes
+
+
+## Avance 8: Crud completo de cliente, facturas y transacciones
+
+1. Se edito el archivo enrutadores/cliente.py
+        - Se añadio una sesion(mi_sesion) de base de datos a listar un solo cliente
+        - Se añadio una sesion(mi_sesion) de base de datos a Editar un cliente
+        - Se añadio una sesion(mi_sesion) de base de datos a Elimiar un cliente
+
+2. Se edito el archivo enrutadores/facturas.py
+        - Se añadio una sesion(mi_sesion) de base de datos a listar un solo cliente
+        - Se añadio una sesion(mi_sesion) de base de datos a Editar un cliente
+        - Se añadio una sesion(mi_sesion) de base de datos a Elimiar un cliente
+
+3. Se edito el archivo enrutadores/transacciones.py
+        - Se añadio una sesion(mi_sesion) de base de datos a listar un solo cliente
+        - Se añadio una sesion(mi_sesion) de base de datos a Editar un cliente
+        - Se añadio una sesion(mi_sesion) de base de datos a Elimiar un cliente
+
+
 
 
     

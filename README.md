@@ -144,20 +144,20 @@ Se crearon los endpoints de Listar, Listar uno, Crear, Editar y Eliminar:
 
 ## Avance 8: Crud completo de cliente, facturas y transacciones
 
-1. Se edito el archivo enrutadores/cliente.py
-        - Se añadio una sesion(mi_sesion) de base de datos a listar un solo cliente
-        - Se añadio una sesion(mi_sesion) de base de datos a Editar un cliente
-        - Se añadio una sesion(mi_sesion) de base de datos a Elimiar un cliente
+1. Se edito el archivo modulos/cliente.py:
+        - Se añadieron Field en ClienteBase, Cliente: id con llave primaria
+   Se edito el archivo enrutadores/cliente.py:
+        - Se añadio una sesion(mi_sesion) de base de datos a listar un solo cliente, Editar un cliente y Elimiar un cliente
 
-2. Se edito el archivo enrutadores/facturas.py
-        - Se añadio una sesion(mi_sesion) de base de datos a listar un solo cliente
-        - Se añadio una sesion(mi_sesion) de base de datos a Editar un cliente
-        - Se añadio una sesion(mi_sesion) de base de datos a Elimiar un cliente
+2. Se edito el archivo modulos/factura.py:
+        - Se añadieron Field en FacturaBase, Factura: id con llave primaria y se añadio una llave foranea con cliente_id
+   Se edito el archivo enrutadores/factura.py:
+        - Se añadio una sesion(mi_sesion) de base de datos a listar una sola factura, Editar una factura y Elimiar una factura
 
-3. Se edito el archivo enrutadores/transacciones.py
-        - Se añadio una sesion(mi_sesion) de base de datos a listar un solo cliente
-        - Se añadio una sesion(mi_sesion) de base de datos a Editar un cliente
-        - Se añadio una sesion(mi_sesion) de base de datos a Elimiar un cliente
+3. Se edito el archivo modulos/transacciones.py:
+        - Se añadieron Field en TransaccionBase, Transaccion: id con llave primaria y se añadio una llave foranea con Factur_id
+   Se edito el archivo enrutadores/transacciones.py:
+        - Se añadio una sesion(mi_sesion) de base de datos a listar una sola Transaccion, Editar una transaccion y Elimiar una transaccion
 
 
 

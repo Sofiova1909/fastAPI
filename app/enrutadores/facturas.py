@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, status
-from ..modelos.facturas import Factura, FacturaCrear, FacturaEditar
+from ..modelos.facturas import Factura, FacturaCrear, FacturaEditar, FacturaLeer, FacturaLeerCompuesta
 from ..modelos.clientes import Cliente
 from ..listas import lista_clientes, lista_facturas
 from ..conexion_bd import sesion_dependencia
@@ -11,15 +11,16 @@ rutas_facturas = APIRouter()
 
 #ENDPOINTS DE FACTURAS
 
-@rutas_facturas.get("/facturas", response_model=list[Factura])
+@rutas_facturas.get("/facturas", response_model=list[FacturaLeerCompuesta])
 async def listar_facturas(sesion: sesion_dependencia):
     consulta = select(Factura)
-    listar_facturas = sesion.exec(consulta).all()
-    return listar_facturas
+    lista_facturas = sesion.exec(consulta).all()
+    return lista_facturas
 
 
-@rutas_facturas.get("/facturas/{factura_id}", response_model=Factura)
-async def listar_facturas(factura_id: int):
+@rutas_facturas.get("/facturas/{factura_id}", response_model=FacturaLeer)
+async def listar_factura(factura_id: int, sesion: sesion_dependencia):
+    factura_bd = sesion.get(Factura, factura_id)
     #recorrer la lista_facturas
     for i, obj_factura in enumerate(lista_facturas):
         if obj_factura.id == factura_id:
@@ -70,13 +71,18 @@ async def editar_facturas(factura_id: int, datos_factura: FacturaEditar, sesion:
 
 
 
-@rutas_facturas.delete("/facturas/{factura_id}", response_model=list[Factura])
+@rutas_facturas.delete("/facturas/{factura_id}", response_model=Factura)
 async def eliminar_facturas(factura_id: int, sesion: sesion_dependencia):
-    factura_bd = sesion.delete(Factura, factura_id )
+
+    factura_bd = sesion.get(Factura, factura_id)
+
     if not factura_bd:
         raise HTTPException(
-        status_code=status.HTTP_400_BAD_REQUEST, detail=f"La factura con id {factura_id}, no existe."
-    )
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"La factura con id {factura_id} no existe."
+        )
+
     sesion.delete(factura_bd)
     sesion.commit()
+
     return factura_bd
